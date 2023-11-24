@@ -32,8 +32,11 @@ let slideInterval = setInterval(function() {
     plusSlides(1);
   }, 3000); // Change the interval (in milliseconds) as needed
 
-  let subMenu = document.getElementById("subMenu");
+let subMenu = document.getElementById("subMenu");
 
 function toggleMenu() {
   subMenu.classList.toggle("open-menu");
+}
+function redirectToRegister() {
+  window.location.href = "admin-register.php";
 }

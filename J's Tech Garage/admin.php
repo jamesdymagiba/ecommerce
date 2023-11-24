@@ -6,18 +6,20 @@ if (!isset($_SESSION["user"])) {
     header("Location: account-login.php");
     exit(); // Ensure script stops execution after redirection
 }
-$userid = $_SESSION["user"]; 
-$sql = "SELECT * FROM usertable WHERE userid = $userid"; 
+$userid = $_SESSION["user"];
 
+// Retrieve all users
+$sql = "SELECT * FROM usertable";
 $result = mysqli_query($conn, $sql);
 
-if ($result) {
-    $user = mysqli_fetch_assoc($result);
-} else {
+if (!$result) {
     die("Error retrieving user data: " . mysqli_error($conn));
 }
-?>
 
+// Fetch all users into an array
+$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +27,7 @@ if ($result) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>J's Tech Garage Shop</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
     
@@ -43,6 +45,20 @@ if ($result) {
                  <div class="sub-menu-container" id="subMenu">
                         <div class="sub-menu">
                             <div class="user-info">
+                                <?php
+                                $userid = $_SESSION["user"];
+
+                                // Retrieve information of the currently logged-in user
+                                $sql = "SELECT * FROM usertable WHERE userid = $userid";
+                                $result = mysqli_query($conn, $sql);
+                                
+                                if (!$result) {
+                                    die("Error retrieving user data: " . mysqli_error($conn));
+                                }
+                                
+                                // Fetch the user information
+                                $user = mysqli_fetch_assoc($result);
+                                ?>
                             <img src="Upload/<?php echo $user['filename']; ?>">
                             <div class="fname-container">
                             <?php echo isset($user["fname"]) ? $user["fname"] : ''; ?>
@@ -71,9 +87,50 @@ if ($result) {
             </nav>
         </div>
 
-        
+        <div class="table-container">
+            <h2>All Users</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Mobile Number</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                        <th>Birthday</th>
+                        <th>Address</th>
+                        <th>User Type</th>
+                        <th>Operation</th>
+                        <!-- Add more columns as needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $user) : ?>
+                        <tr>
+                            <td><?php echo $user['userid']; ?></td>
+                            <td><?php echo $user['fname']; ?></td>
+                            <td><?php echo $user['lname']; ?></td>
+                            <td><?php echo $user['mnumber']; ?></td>
+                            <td><?php echo $user['email']; ?></td>
+                            <td><?php echo $user['gender']; ?></td>
+                            <td><?php echo $user['birthday']; ?></td>
+                            <td><?php echo $user['address']; ?></td>
+                            <td><?php echo $user['usertype']; ?></td>
+                            <td>
+                                <button class="btn-update"><a href="">Update</a></button>
+                                <button class="btn-delete"><a href="">Delete</a></button>
+                            </td>
 
-       
+
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <button onclick="redirectToRegister()" class="btn-add">Add User</button>
+        </div>
+
+    
         <div class="footer">
             <div class="footer-about">
                 <img src="images/biglogonobg.png">
@@ -104,7 +161,7 @@ if ($result) {
     </div>
     
     
-    <script src="script.js"></script>
+    <script src="admin.js"></script>
     
 </body>
 </html>
