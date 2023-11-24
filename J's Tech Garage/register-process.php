@@ -47,7 +47,7 @@ if (isset($_POST["submit"])) {
         if (mysqli_stmt_prepare($stmt, $sql)) {
             mysqli_stmt_bind_param($stmt, "ssssssssss", $fname, $lname, $gender, $password, $mnumber, $email, $birthday, $address, $filename, $usertype);
             mysqli_stmt_execute($stmt);
-            echo "<div class='success-msg'>You are now registered.</div>";
+            echo "<div class='success-msg'>Registered Sucessfuly.</div>";
         } else {
             die("Something went wrong");
         }

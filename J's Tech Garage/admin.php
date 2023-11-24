@@ -119,7 +119,10 @@ $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
                             <td><?php echo $user['usertype']; ?></td>
                             <td>
                                 <button class="btn-update"><a href="">Update</a></button>
-                                <button class="btn-delete"><a href="">Delete</a></button>
+                                <form method="post" action="admin-delete.php" style="display:inline;">
+                    <input type="hidden" name="userid" value="<?php echo $user['userid']; ?>">
+                    <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                </form>
                             </td>
 
 
