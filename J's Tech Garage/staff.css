@@ -133,19 +133,29 @@
     left: 1%;
     border: 2px solid #343434;
   }
+  .product-desc-class{
+    width: 15%;
+  }
   .table-container table {
     border-collapse: collapse;
     width: 100%;
+}
+.table-container h2{
+  background-color: #343434;
+  color: #F5F5DC;
+  padding: 10px;
+  border: 2px solid #F5F5DC;
 }
 
 .table-container th, .table-container td {
     padding: 8px;
     text-align: left;
-    border: 1px solid #ddd; /* Add border for better visibility */
+    border: 1px solid #343434; /* Add border for better visibility */
 }
 
 .table-container th {
-    background-color: #f2f2f2; /* Add a background color for header cells */
+    background-color: #343434;
+    color: #F5F5DC; /* Add a background color for header cells */
 }
 .btn-update,.btn-delete,.btn-add{
     background-color: #343434;
@@ -153,6 +163,12 @@
     width: 70px;
     height: 30px;
     border-radius: 5px;
+}
+.btn-class{
+  width: 10%;
+}
+.operation-btn-container{
+  display: flex;
 }
   .footer{
   position: absolute;

@@ -41,7 +41,7 @@ $products = mysqli_fetch_all($resultProducts, MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>J's Tech Garage Shop</title>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="staff.css">
 </head>
 <body>
     <div class="container">
@@ -106,7 +106,7 @@ $products = mysqli_fetch_all($resultProducts, MYSQLI_ASSOC);
                     <tr>
                         <th>Product ID</th>
                         <th>Product Name</th>
-                        <th>Product Description</th>
+                        <th class="product-desc-class">Product Description</th>
                         <th>Product Type</th>
                         <th>Product Price</th>
                         <th>Product Image</th>
@@ -124,13 +124,16 @@ $products = mysqli_fetch_all($resultProducts, MYSQLI_ASSOC);
                             <td><?php echo $product['productprice']; ?></td>
                             <td><img src="Upload/<?php echo $product['productimage']; ?>" alt="Product Image" width="50px"></td>
                             <!-- Add more columns as needed -->
-                            <td>
+                            <td class="btn-class">
                                 <!-- Add any operation buttons or links as needed -->
+                                <div class="operation-btn-container">
                                 <button class="btn-update"><a href="">Update</a></button>
                                 <form method="post" action="product-delete.php">
                                     <input type="hidden" name="productid" value="<?php echo $product['productid']; ?>">
                                     <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
                                 </form>
+                                </div>
+                                
                             </td>
                         </tr>
                     <?php endforeach; ?>
