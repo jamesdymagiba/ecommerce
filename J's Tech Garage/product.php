@@ -7,14 +7,17 @@ if (!isset($_SESSION["user"])) {
     exit(); // Ensure script stops execution after redirection
 }
 $userid = $_SESSION["user"]; 
-$sql = "SELECT * FROM usertable WHERE userid = $userid"; 
+
+// Modify the SQL query to fetch data from producttable
+$sql = "SELECT productname, productdesc, producttype, productimage, productprice FROM producttable";
 
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
-    $user = mysqli_fetch_assoc($result);
+    // Fetch all rows from the result set
+    $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
-    die("Error retrieving user data: " . mysqli_error($conn));
+    die("Error retrieving product data: " . mysqli_error($conn));
 }
 ?>
 
@@ -73,82 +76,45 @@ if ($result) {
         </div>
 
         <div class="search-container">
-            <input type="text" placeholder="  What are you looking for?" autofocus>
-            <a href="" class="search-img" ><img src="images/icons/search.png"></a>
-        </div>
+        <input type="text" id="searchInput" placeholder="What are you looking for?" autofocus>
+        <a href="#" class="search-img" onclick="filterProducts()"><img src="images/icons/search.png"></a>
+    </div>
+    
+    <div class="filter-container">
+        <select class="filter-dd" name="filter-type" id="filterType">
+            <option value="" disabled selected>Filter by Type</option>
+            <option value="brake-pad">Brake Pad</option>
+            <option value="rear-shock">Rear Shock</option>
+            <option value="motor-oil">Motor Oil</option>
+            <option value="tire-sealant">Tire Sealant</option>
+            <option value="all">All Type</option>
+        </select>
         
-        <div class="filter-container">
-            <select class="filter-dd" name="filter-type" id="filter">
-                <option value="" disabled selected>Filter by Type</option>
-                    <option value="brake-pad">Brake Pad</option>
-                    <option value="rear-shock">Rear Shock</option>
-                    <option value="motor-oil">Motor Oil</option>
-                    <option value="motor-oil">All Type</option>
-            </select>
-            
-            <select class="sort-dd" name="sort-price" id="sort">
-                <option value="" disabled selected>Sort by Price</option>
-                    <option value="lowest-highest">Lowest-Highest</option>
-                    <option value="highest-lowest">Highest-Lowest</option>
-                    <option value="motor-oil">Any Price</option>
-            </select>
-        </div>
+        <select class="sort-dd" name="sort-price" id="sortPrice">
+            <option value="" disabled selected>Sort by Price</option>
+            <option value="lowest-highest">Lowest-Highest</option>
+            <option value="highest-lowest">Highest-Lowest</option>
+            <option value="any">Any Price</option>
+        </select>
+    </div>
+
+    <div class="product-container" id="productContainer">
+        <!-- Products will be dynamically added here using JavaScript -->
+    </div>
 
         <div class="product-container">
-
-                <div class="img-container">
-                    <img src="images/products/grs-throttle-cable.jpg">
-                    <div class="product-name">GRS Throttle Cable</div>
-                    <div class="product-price">₱1000</div>
-                </div>
-
-                <div class="img-container">
-                    <img src="images/products/jvt-brake-shoe.jpg">
-                    <div class="product-name">JVT Brake Shoe</div>
-                    <div class="product-price">₱2000</div>
-                </div>
-
-                <div class="img-container">
-                    <img src="images/products/jvt-breakpad.jpg">
-                    <div class="product-name">JVT Brake Pad</div>
-                    <div class="product-price">₱3000</div>
-                </div>
-
-                <div class="img-container">
-                    <img src="images/products/koby-tire-selant.jpg">
-                    <div class="product-name">Koby Tire Sealant</div>
-                    <div class="product-price">₱4000</div>
-                </div>
-
-                <div class="img-container">
-                    <img src="images/products/kryon-brake-shoe.jpg">
-                    <div class="product-name">Kryon Brake Shoe</div>
-                    <div class="product-price">₱5000</div>               
-                 </div>
-
-                <div class="img-container">
-                    <img src="images/products/mutarru-rear-shock.jpg">
-                    <div class="product-name">Mutarru Rear Shock</div>
-                    <div class="product-price">₱6000</div>
-                </div>
-
-                <div class="img-container">
-                    <img src="images/products/Petron-gasoline-engine-oil-blaze-racing.jpg">
-                    <div class="product-name">Petron Engine Oil</div>
-                </div>
-
-                <div class="img-container">
-                    <img src="images/products/shell-motor-oil.jpg">
-                    <div class="product-name">Shell Motor Oil</div>
-                    <div class="product-price">₱8000</div>
-                 </div>
-
-                <div class="img-container">
-                    <img src="images/products/smok-rear-shock.jpg">
-                    <div class="product-name">Smok Rear Shock</div>
-                    <div class="product-price">₱9000</div>  
-                 </div>
-        </div>
+        <?php
+        // Loop through each product and display the relevant information
+        foreach ($products as $product) {
+            echo '<div class="img-container">';
+            echo '<img src="images/products/' . $product['productimage'] . '">';
+            echo '<div class="product-name">' . $product['productname'] . '</div>';
+            echo '<div class="product-desc">' . $product['productdesc'] . '</div>';
+            echo '<div class="product-price">₱' . $product['productprice'] . '</div>';
+            echo '</div>';
+        }
+        ?>
+    </div>
        
 
        
@@ -184,5 +150,74 @@ if ($result) {
     
     
     <script src="product.js"></script>
+
+    <!-- Include dynamic data using a script tag -->
+    <script>
+        // Initialize products array with PHP data
+        var products = <?php echo json_encode($products); ?>;
+
+        // Function to filter and display products
+        function filterProducts() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var filterType = document.getElementById('filterType').value;
+            var sortPrice = document.getElementById('sortPrice').value;
+
+            var filteredProducts = products.filter(function(product) {
+                return (
+                    (product.productname.toLowerCase().includes(searchInput) || 
+                     product.productdesc.toLowerCase().includes(searchInput)) &&
+                    (filterType === 'all' || product.producttype === filterType)
+                );
+            });
+
+            if (sortPrice === 'lowest-highest') {
+                filteredProducts.sort(function(a, b) {
+                    return a.productprice - b.productprice;
+                });
+            } else if (sortPrice === 'highest-lowest') {
+                filteredProducts.sort(function(a, b) {
+                    return b.productprice - a.productprice;
+                });
+            }
+
+            displayProducts(filteredProducts);
+        }
+
+        // Function to dynamically display products
+        function displayProducts(products) {
+            var productContainer = document.getElementById('productContainer');
+            productContainer.innerHTML = '';
+
+            products.forEach(function(product) {
+                var imgContainer = document.createElement('div');
+                imgContainer.className = 'img-container';
+
+                var img = document.createElement('img');
+                img.src = 'images/products/' + product.productimage;
+
+                var productName = document.createElement('div');
+                productName.className = 'product-name';
+                productName.textContent = product.productname;
+
+                var productDesc = document.createElement('div');
+                productDesc.className = 'product-desc';
+                productDesc.textContent = product.productdesc;
+
+                var productPrice = document.createElement('div');
+                productPrice.className = 'product-price';
+                productPrice.textContent = '₱' + product.productprice;
+
+                imgContainer.appendChild(img);
+                imgContainer.appendChild(productName);
+                imgContainer.appendChild(productDesc);
+                imgContainer.appendChild(productPrice);
+
+                productContainer.appendChild(imgContainer);
+            });
+        }
+
+        // Initial display of products
+        displayProducts(products);
+    </script>
 </body>
 </html>

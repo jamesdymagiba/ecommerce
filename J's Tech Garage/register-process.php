@@ -10,7 +10,7 @@ if (isset($_POST["submit"])) {
     $address = $_POST["address"];
     $filename = $_FILES["filename"]["name"];
     $filetmp = $_FILES["filename"]["tmp_name"];
-    $target_dir = "Upload/";  // Change this to your desired destination directory
+    $target_dir = "Upload/"; 
     $target_path = $target_dir . $filename;
 
     move_uploaded_file($filetmp, $target_path);

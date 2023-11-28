@@ -106,7 +106,7 @@ $user = mysqli_fetch_assoc($result);
                     <button id="signup" class="btn-signup" name="submit">Add User</button>
                 </a>
             </div>
-            <?php include("register-process.php"); ?>
+            <?php include("admin-register-process.php"); ?>
          
             </form>
 
