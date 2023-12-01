@@ -1,20 +1,30 @@
 <?php
 require_once "database.php";
-session_start(); // Check if there is a user session
-if (!isset($_SESSION["user"])) {
-    // Redirect to the login page if no user session
-    header("Location: account-login.php");
-    exit(); // Ensure script stops execution after redirection
-}
-$userid = $_SESSION["user"]; 
+session_start();
 
-// Modify the SQL query to fetch data from producttable
-$sql = "SELECT productname, productdesc, producttype, productimage, productprice FROM producttable";
+if (!isset($_SESSION["user"])) {
+    header("Location: account-login.php");
+    exit();
+}
+
+$userid = $_SESSION["user"];
+
+// Retrieve information of the currently logged-in user
+$sqlUser = "SELECT * FROM usertable WHERE userid = $userid";
+$resultUser = mysqli_query($conn, $sqlUser);
+
+if (!$resultUser) {
+    die("Error retrieving user data: " . mysqli_error($conn));
+}
+
+// Fetch the user information
+$user = mysqli_fetch_assoc($resultUser);
+
+$sql = "SELECT productname, productdesc, producttype, productimage, productprice, productquantity FROM producttable";
 
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
-    // Fetch all rows from the result set
     $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
     die("Error retrieving product data: " . mysqli_error($conn));
@@ -76,9 +86,9 @@ if ($result) {
         </div>
 
         <div class="search-container">
-        <input type="text" id="searchInput" placeholder="What are you looking for?" autofocus>
-        <a href="#" class="search-img" onclick="filterProducts()"><img src="images/icons/search.png"></a>
-    </div>
+            <input type="text" id="searchInput" placeholder="What are you looking for?" autofocus>
+            <button class="search-btn" id="searchBtn">Search</button>
+        </div>
     
     <div class="filter-container">
         <select class="filter-dd" name="filter-type" id="filterType">
@@ -102,7 +112,7 @@ if ($result) {
         <!-- Products will be dynamically added here using JavaScript -->
     </div>
 
-        <div class="product-container">
+        <div class="product-container" id="productContainer2">
         <?php
         // Loop through each product and display the relevant information
         foreach ($products as $product) {
@@ -110,6 +120,7 @@ if ($result) {
             echo '<img src="images/products/' . $product['productimage'] . '">';
             echo '<div class="product-name">' . $product['productname'] . '</div>';
             echo '<div class="product-desc">' . $product['productdesc'] . '</div>';
+            echo '<div class="product-quantity">Stock: ' . $product['productquantity'] . '</div>';
             echo '<div class="product-price">₱' . $product['productprice'] . '</div>';
             echo '</div>';
         }
@@ -151,73 +162,111 @@ if ($result) {
     
     <script src="product.js"></script>
 
-    <!-- Include dynamic data using a script tag -->
     <script>
-        // Initialize products array with PHP data
-        var products = <?php echo json_encode($products); ?>;
+  // Initialize products array with PHP data
+var products = <?php echo json_encode($products); ?>;
+console.log(products);
 
-        // Function to filter and display products
-        function filterProducts() {
-            var searchInput = document.getElementById('searchInput').value.toLowerCase();
-            var filterType = document.getElementById('filterType').value;
-            var sortPrice = document.getElementById('sortPrice').value;
+// Function to filter and display products
+function filterProducts() {
+    console.log('Function triggered');
 
-            var filteredProducts = products.filter(function(product) {
-                return (
-                    (product.productname.toLowerCase().includes(searchInput) || 
-                     product.productdesc.toLowerCase().includes(searchInput)) &&
-                    (filterType === 'all' || product.producttype === filterType)
-                );
-            });
+    // Check if the searchInput element exists and has a value
+    var searchInput = document.getElementById('searchInput');
+    if (!searchInput || !searchInput.value) {
+        console.error('Search input element not found or empty');
+        return;
+    }
 
-            if (sortPrice === 'lowest-highest') {
-                filteredProducts.sort(function(a, b) {
-                    return a.productprice - b.productprice;
-                });
-            } else if (sortPrice === 'highest-lowest') {
-                filteredProducts.sort(function(a, b) {
-                    return b.productprice - a.productprice;
-                });
-            }
+    var searchValue = searchInput.value.toLowerCase();
+    console.log('Search value:', searchValue);
 
-            displayProducts(filteredProducts);
-        }
+    var filterType = document.getElementById('filterType').value;
+    console.log('Filter Type:', filterType);
 
-        // Function to dynamically display products
-        function displayProducts(products) {
-            var productContainer = document.getElementById('productContainer');
-            productContainer.innerHTML = '';
+    var sortPrice = document.getElementById('sortPrice').value;
 
-            products.forEach(function(product) {
-                var imgContainer = document.createElement('div');
-                imgContainer.className = 'img-container';
+    var filteredProducts = products.filter(function (product) {
+        var matchesSearch = product.productname.toLowerCase().includes(searchValue) || product.productdesc.toLowerCase().includes(searchValue);
+        var matchesType = filterType === 'all' || product.producttype === filterType;
 
-                var img = document.createElement('img');
-                img.src = 'images/products/' + product.productimage;
+        console.log('Product:', product.productname, 'Matches Search:', matchesSearch, 'Matches Type:', matchesType);
 
-                var productName = document.createElement('div');
-                productName.className = 'product-name';
-                productName.textContent = product.productname;
+        // Return true if there is a match in the search, regardless of the filter type
+        return matchesSearch;
+    });
 
-                var productDesc = document.createElement('div');
-                productDesc.className = 'product-desc';
-                productDesc.textContent = product.productdesc;
+    console.log('Filtered products:', filteredProducts);
 
-                var productPrice = document.createElement('div');
-                productPrice.className = 'product-price';
-                productPrice.textContent = '₱' + product.productprice;
+    if (sortPrice === 'lowest-highest') {
+        filteredProducts.sort(function (a, b) {
+            return a.productprice - b.productprice;
+        });
+    } else if (sortPrice === 'highest-lowest') {
+        filteredProducts.sort(function (a, b) {
+            return b.productprice - a.productprice;
+        });
+    }
 
-                imgContainer.appendChild(img);
-                imgContainer.appendChild(productName);
-                imgContainer.appendChild(productDesc);
-                imgContainer.appendChild(productPrice);
+    // Display the filtered products
+    displayProducts(filteredProducts);
+}
+// Function to dynamically display products
+function displayProducts(products) {
+    // Update the main product container
+    var productContainer = document.getElementById('productContainer');
+    productContainer.innerHTML = '';
+    updateContainer(productContainer, products);
 
-                productContainer.appendChild(imgContainer);
-            });
-        }
+    // Update the second product container (assuming it has the ID 'productContainer2')
+    var productContainer2 = document.getElementById('productContainer2');
+    if (productContainer2) {
+        productContainer2.innerHTML = '';
+        updateContainer(productContainer2, products);
+    }
+}
 
-        // Initial display of products
-        displayProducts(products);
-    </script>
+// Helper function to update a product container
+function updateContainer(container, products) {
+    products.forEach(function (product) {
+        var imgContainer = document.createElement('div');
+        imgContainer.className = 'img-container';
+
+        var img = document.createElement('img');
+        img.src = 'images/products/' + product.productimage;
+
+        var productName = document.createElement('div');
+        productName.className = 'product-name';
+        productName.textContent = product.productname;
+
+        var productDesc = document.createElement('div');
+        productDesc.className = 'product-desc';
+        productDesc.textContent = product.productdesc;
+
+        var productPrice = document.createElement('div');
+        productPrice.className = 'product-price';
+        productPrice.textContent = '₱' + product.productprice;
+
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(productName);
+        imgContainer.appendChild(productDesc);
+        imgContainer.appendChild(productPrice);
+
+        container.appendChild(imgContainer);
+    });
+}
+
+// Initial display of products
+displayProducts(products);
+
+// Attach click event listener to the search button
+document.getElementById('searchBtn').addEventListener('click', function(event) {
+    event.preventDefault();
+    console.log('Search button clicked');
+    filterProducts();
+});
+
+</script>
+
 </body>
 </html>

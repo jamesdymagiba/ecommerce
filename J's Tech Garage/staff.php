@@ -108,6 +108,7 @@ $products = mysqli_fetch_all($resultProducts, MYSQLI_ASSOC);
                         <th>Product Name</th>
                         <th class="product-desc-class">Product Description</th>
                         <th>Product Type</th>
+                        <th>Product Quantity</th>
                         <th>Product Price</th>
                         <th>Product Image</th>
                         <!-- Add more columns as needed -->
@@ -121,6 +122,7 @@ $products = mysqli_fetch_all($resultProducts, MYSQLI_ASSOC);
                             <td><?php echo $product['productname']; ?></td>
                             <td><?php echo $product['productdesc']; ?></td>
                             <td><?php echo $product['producttype']; ?></td>
+                            <td><?php echo $product['productquantity']; ?></td>
                             <td><?php echo $product['productprice']; ?></td>
                             <td><img src="Upload/<?php echo $product['productimage']; ?>" alt="Product Image" width="50px"></td>
                             <!-- Add more columns as needed -->

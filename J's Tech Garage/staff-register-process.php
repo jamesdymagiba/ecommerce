@@ -3,6 +3,7 @@ if (isset($_POST["submit"])) {
     $productname = $_POST["productname"];
     $productdesc = $_POST["productdesc"];
     $producttype = $_POST["producttype"];
+    $productquantity = $_POST["productquantity"];
     $productprice = $_POST["productprice"];
     $productimage = $_FILES["productimage"]["name"];
     $filetmp = $_FILES["productimage"]["tmp_name"];
@@ -29,10 +30,10 @@ if (isset($_POST["submit"])) {
             echo "<div class='error-msg'>$error</div>";
         }
     } else {
-        $sql = "INSERT INTO producttable (productname, productdesc, producttype, productprice, productimage) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO producttable (productname, productdesc, producttype,productquantity, productprice, productimage) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_stmt_init($conn);
         if (mysqli_stmt_prepare($stmt, $sql)) {
-            mysqli_stmt_bind_param($stmt, "sssss", $productname, $productdesc, $producttype, $productprice, $productimage);
+            mysqli_stmt_bind_param($stmt, "ssssss", $productname, $productdesc, $producttype,$productquantity, $productprice, $productimage);
             mysqli_stmt_execute($stmt);
             echo "<div class='success-msg'>Product added successfully.</div>";
         } else {

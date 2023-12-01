@@ -64,6 +64,7 @@ $user = mysqli_fetch_assoc($result);
                 <input type="text" name="productname" required placeholder="  Product Name" class="signup-fname">
                 <input type="text" name="productdesc" required placeholder="  Product Description" class="signup-lname">
                 <input type="text" name="producttype" required placeholder="  Product Type" class="signup-password">
+                <input type="text" name="productquantity" required placeholder="  Product Quantity" class="signup-password">
                 <input type="number" name="productprice" required placeholder="  Product Price" class="signup-mnumber">
                 <input type="file" name="productimage" id="productimage" required>
 
