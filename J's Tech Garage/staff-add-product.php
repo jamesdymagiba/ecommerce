@@ -44,13 +44,42 @@ $user = mysqli_fetch_assoc($result);
                     <li><img src="images/icons/user.png" onclick="toggleMenu()" class="icon-image"></li>
                     <div class="sub-menu-container" id="subMenu">
                         <div class="sub-menu">
-                            <!-- Display user information or any other relevant content here if needed -->
+                            <div class="user-info">
+                                <?php
+                                $userid = $_SESSION["user"];
+
+                                // Retrieve information of the currently logged-in user
+                                $sql = "SELECT * FROM usertable WHERE userid = $userid";
+                                $result = mysqli_query($conn, $sql);
+                                
+                                if (!$result) {
+                                    die("Error retrieving user data: " . mysqli_error($conn));
+                                }
+                                
+                                // Fetch the user information
+                                $user = mysqli_fetch_assoc($result);
+                                ?>
+                            <img src="Upload/<?php echo $user['filename']; ?>">
+                            <div class="fname-container">
+                            <?php echo isset($user["fname"]) ? $user["fname"] : ''; ?>
+                            </div>
+                            <div class="lname-container">
+                            <?php echo isset($user["lname"]) ? $user["lname"] : ''; ?>
+                            </div>
+                            </div>
+                            
                             <hr>
-                            <a href="logout.php" class="sub-menu-link">
+
+                            <a href="profile.php" class="sub-menu-link">
+                                <img src="images/icons/user.png">
+                                <p>Update Profile</p>
+                                <span>></span>
+                            </a><a href="logout.php" class="sub-menu-link">
                                 <img src="images/icons/logout.png">
                                 <p>Logout</p>
                                 <span>></span>
                             </a>
+
                         </div>
                     </div>
                     <li> <a href="cart.php"><img src="images/icons/shopping-cart.png" class="cart"></a></li>

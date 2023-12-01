@@ -1,4 +1,3 @@
-// Move the script to the end of the body
 let slideIndex = 1;
 showSlides(slideIndex);
 

@@ -129,7 +129,7 @@ $products = mysqli_fetch_all($resultProducts, MYSQLI_ASSOC);
                             <td class="btn-class">
                                 <!-- Add any operation buttons or links as needed -->
                                 <div class="operation-btn-container">
-                                <button class="btn-update"><a href="">Update</a></button>
+                                <button class="btn-update"><a href="update-product.php?productid=<?php echo $product['productid']; ?>">Update</a></button>
                                 <form method="post" action="product-delete.php">
                                     <input type="hidden" name="productid" value="<?php echo $product['productid']; ?>">
                                     <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
