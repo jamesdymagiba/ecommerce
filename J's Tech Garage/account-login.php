@@ -1,6 +1,5 @@
 <?php include "isLoggedIn.php"?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +79,7 @@
                         <img src="images/people/racer-9.jpg">
                     </div>
                     
-                   
+                  
                     <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
                 </div>
@@ -94,30 +93,14 @@
                 <input type="password" required placeholder="  Password" name="password" class="login-password">
                 <button class="btn-login" name="login">Log in</button>
                 <button class="btn-forget">Forget Password</button>
-                </form>
+        </form>
 
                 <div class="signup-container">
                     <a href="account-register.php">
                         <button class="btn-signup">Sign up</button>
                     </a>
                 </div>   
-                <?php
-                require_once "login-process.php"; 
-
-                if (isset($_POST["login"])) {
-                    $email = $_POST["email"];
-                    $password = $_POST["password"];
-                    require_once "database.php";
-                    
-                    // Use the loginUser function
-                    $result = loginUser($conn, $email, $password);
-
-                    if (!empty($result)) {
-                        // Handle login errors
-                        echo $result;
-                    }
-                }
-                ?>
+            
         </div>
         
         <div class="footer">

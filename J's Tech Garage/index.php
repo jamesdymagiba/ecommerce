@@ -37,7 +37,18 @@ if ($result) {
             </div>
             <nav>
                 <ul>
-                    <li><a href="admin.php">Admin</a></li>
+                <?php
+                    // Check if the user has the "admin" usertype
+                    if ($user['usertype'] === 'admin') {
+                        echo '<li><a href="admin.php">Admin</a></li>';
+                    }
+                    ?>
+                    <?php
+                    // Check if the user has the "staff" usertype
+                    if ($user['usertype'] === 'staff') {
+                        echo '<li><a href="staff.php">Staff</a></li>';
+                    }
+                    ?>
                     <li><a href="index.php">Home</a></li>
                     <li><a href="product.php">Products</a></li>
                     <li><img src="images/icons/user.png" onclick="toggleMenu()"></li>

@@ -1,4 +1,4 @@
-var slideIndex = 0;
+var slideIndex = 1; // Start from the first slide
 var slides = document.getElementsByClassName("racerSlide");
 var interval;
 
@@ -9,9 +9,10 @@ function showSlides() {
     slides[i].style.display = "none";
   }
 
-  slideIndex++;
   if (slideIndex > slides.length) {
     slideIndex = 1;
+  } else if (slideIndex < 1) {
+    slideIndex = slides.length;
   }
 
   slides[slideIndex - 1].style.display = "block";
@@ -19,16 +20,16 @@ function showSlides() {
 
 function plusSlides(n) {
   clearInterval(interval);
-  showSlides((slideIndex += n));
+  slideIndex += n;
+  showSlides();
   interval = setInterval(showSlides, 3000);
 }
 
 function currentSlide(n) {
   clearInterval(interval);
-  showSlides((slideIndex = n));
+  slideIndex = n;
+  showSlides();
   interval = setInterval(showSlides, 3000);
 }
 
 interval = setInterval(showSlides, 3000);
-
-
