@@ -144,6 +144,81 @@ $products = mysqli_fetch_all($resultProducts, MYSQLI_ASSOC);
             <button onclick="redirectToRegister()" class="btn-add">Add Product</button>
         </div>
 
+        <div class="active-container">
+        <h2>Active Orders</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product ID</th>
+                    <th>Customer Name</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Mode of Payment</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Order Date</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>123</td>
+                    <td>321</td>
+                    <td>James Dy</td>
+                    <td>JVT Brake Pad</td>
+                    <td>500</td>
+                    <td>2</td>
+                    <td>1000</td>
+                    <td>Cash on Delivery</td>
+                    <td>Melody Plains, Muzon</td>
+                    <td>To Pack</td>
+                    <td>2023-12-06 12:30:00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Order History Table -->
+    <div class="history-container">
+        <h2>Order History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product ID</th>
+                    <th>Customer Name</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Mode of Payment</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Delivered Date</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>234</td>
+                    <td>543</td>
+                    <td>Mark Dalo Dacullo</td>
+                    <td>Shell Motor Oil</td>
+                    <td>900</td>
+                    <td>2</td>
+                    <td>1800</td>
+                    <td>Cash on Delivery</td>
+                    <td>Melody Plains, Muzon</td>
+                    <td>Delivered</td>
+                    <td>2023-12-06 12:30:00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
         <div class="footer">
             <div class="footer-about">
                 <img src="images/biglogonobg.png">

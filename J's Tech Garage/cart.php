@@ -149,10 +149,17 @@ $shippingFee = 0;
 
                 <div class="order-details-container">
                     <h4>Order Details</h4>
-                    <p><strong>First Name:</strong> <?php echo $user['fname']; ?></p>
-                    <p><strong>Last Name:</strong> <?php echo $user['lname']; ?></p>
-                    <p><strong>Address:</strong> <?php echo $user['address']; ?></p>
-                    <p><strong>Mobile Number:</strong> <?php echo $user['mnumber']; ?></p>
+                        <p><strong>First Name:</strong> <?php echo $user['fname']; ?></p>
+                        <p><strong>Last Name:</strong> <?php echo $user['lname']; ?></p>
+                        <p><strong>Address:</strong> <?php echo $user['address']; ?></p>
+                        <p><strong>Mobile Number:</strong> <?php echo $user['mnumber']; ?></p>
+
+                    <label for="payment-mode"><strong>Mode of Payment</strong>:</label>
+                        <select id="payment-mode" name="payment_mode" class="payment-mode">
+                            <option value="cash_on_delivery">Cash on Delivery</option>
+                            <option value="gcash">G-Cash</option>
+                            <option value="maya">Maya</option>
+                        </select>
 
                     <!-- Add a checkout button -->
                     <div class="checkout-btn-container">

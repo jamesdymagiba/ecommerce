@@ -173,9 +173,8 @@
 }
 .product-container{
   position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   top: 50%;
   left: 5%;
   width: 90%;
@@ -212,7 +211,7 @@
   position: absolute;
   display: flex;
   justify-content: space-between;
-  top: 200%;
+  top: 150%;
   margin-top: 50px;
   margin-bottom: 50px;
   border: solid black;

@@ -175,11 +175,65 @@
 .operation-btn-container{
   display: flex;
 }
+.active-container{
+  position: absolute;
+  top: 110%;
+  left: 1%;
+  border: 2px solid #343434;
+}
+.active-container table{
+  border-collapse: collapse;
+  width: 1450px;
+}
+.active-container h2{
+  background-color: #343434;
+  color: #F5F5DC;
+  padding: 10px;
+  border: 2px solid #F5F5DC;
+}
+
+.active-container th, .active-container td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #343434; /* Add border for better visibility */
+}
+
+.active-container th {
+    background-color: #343434;
+    color: #F5F5DC; /* Add a background color for header cells */
+}
+.history-container{
+  position: absolute;
+  top: 150%;
+  left: 1%;
+  border: 2px solid #343434;
+}
+.history-container table{
+  border-collapse: collapse;
+  width: 1450px;
+}
+.history-container h2{
+  background-color: #343434;
+  color: #F5F5DC;
+  padding: 10px;
+  border: 2px solid #F5F5DC;
+}
+
+.history-container th, .history-container td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #343434; /* Add border for better visibility */
+}
+
+.history-container th {
+    background-color: #343434;
+    color: #F5F5DC; /* Add a background color for header cells */
+}
   .footer{
   position: absolute;
   display: flex;
   justify-content: space-between;
-  top: 100%;
+  top: 200%;
   margin-top: 50px;
   margin-bottom: 50px;
   border: solid black;
