@@ -130,7 +130,7 @@ $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <button onclick="redirectToRegister()" class="btn-add">Add User</button>
+            <button onclick="redirectToRegister()" class="btn-add">Add Staff</button>
         </div>
 
     

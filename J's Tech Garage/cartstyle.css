@@ -236,6 +236,7 @@
     height: 30px;
     color: #F5F5DC;
     background-color: #343434;
+    border-radius: 5px;
   }
   .checkout-btn-container{
     margin-top: 20px;
